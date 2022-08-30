@@ -18,8 +18,8 @@ app.get("/api", (req, res) => {
 app.post("/api/auth", (req, res) => {
 
     const usuario = {
-        user: "demo",
-        password: "omed"
+        user: req.body.user,
+        password: req.body.password
     }
 
     jwt.sign({usuario: usuario}, 'secretKey',(err, token)=>{
