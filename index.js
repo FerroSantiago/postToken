@@ -21,12 +21,16 @@ app.post("/api/auth", (req, res) => {
         user: req.body.user,
         password: req.body.password
     }
-
-    jwt.sign({usuario: usuario}, 'secretKey',(err, token)=>{
-        res.json({
-            token: token
+    if(req.body.password === reverse(req.body.user)){
+        jwt.sign({usuario: usuario}, 'secretKey',(err, token)=>{
+            res.json({
+                token: token
+            })
         })
-    })
+    }else{
+        res.sendStatus(409)
+    }
+
 })
 
 app.post("/api/post", verifyToken, (req, res) => {
@@ -53,6 +57,10 @@ function verifyToken(req, res, next){
     }else{
         res.sendStatus(403)
     }
+}
+
+function reverse(s){
+    return s.split("").reverse().join("");
 }
 
 const PORT = process.env.PORT || 3000
