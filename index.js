@@ -21,8 +21,15 @@ app.post("/api/auth", (req, res) => {
         user: req.body.user,
         password: req.body.password
     }
+
     if(req.body.password === reverse(req.body.user)){
-        jwt.sign({usuario: usuario}, 'secretKey',(err, token)=>{
+
+        const claimResp = {
+            user_id: Math.floor(Math.random()*9000)+1000,
+            name: req.body.user
+        }
+
+        jwt.sign({claimResp}, 'secretKey',(err, token)=>{
             res.json({
                 token: token
             })
